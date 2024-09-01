@@ -8,6 +8,7 @@ import ReactNativeModal from "react-native-modal";
 import InputField from "@/components/InputField";
 import CustomButton from "@/components/CustomButton";
 import OAuth from "@/components/OAuth";
+import { fetchAPI } from "@/constants/fetch";
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -59,7 +60,14 @@ const SignUp = () => {
       });
 
       if (completeSignUp.status === "complete") {
-        //TODO: Create a database user
+        await fetchAPI("/(api)/user", {
+            method: "POST",
+            body: JSON.stringify({
+                name: form.name,
+                email: form.email,
+                clerkId: completeSignUp.createdUserId
+            })
+        })
 
         await setActive({ session: completeSignUp.createdSessionId });
         setVerification({
@@ -87,7 +95,7 @@ const SignUp = () => {
       <View className="flex-1">
         <View className="relative w-full h-[250px]">
           <Image source={images.signUpCar} className="z-0 w-full h-[250px]" />
-          <Text className="text-2xl text-black font-JakartaSemiBold absolute bottom-5 left-5">
+          <Text className="absolute text-2xl text-black font-JakartaSemiBold bottom-5 left-5">
             Create Your Account
           </Text>
         </View>
@@ -124,7 +132,7 @@ const SignUp = () => {
 
           <Link
             href="/sign-in"
-            className="text-lg text-center text-general-200 mt-10"
+            className="mt-10 text-lg text-center text-general-200"
           >
             <Text>Already have an account? </Text>
             <Text className="text-primary-500">Log In</Text>
@@ -136,10 +144,10 @@ const SignUp = () => {
             }}
           >
             <View className="bg-white px-7 py-9 rounded-2xl min-h-[300px]">
-              <Text className="text-2xl font-JakartaExtraBold mb-2">
+              <Text className="mb-2 text-2xl font-JakartaExtraBold">
                 Verification
               </Text>
-              <Text className="font-Jakarta mb-5">
+              <Text className="mb-5 font-Jakarta">
                 We're sent a verification code to {form.email}
               </Text>
 
@@ -155,7 +163,7 @@ const SignUp = () => {
               />
 
               {verification.error && (
-                <Text className="text-red-500 text-center mt-2">
+                <Text className="mt-2 text-center text-red-500">
                   {verification.error}
                 </Text>
               )}
@@ -174,11 +182,11 @@ const SignUp = () => {
                 source={images.check}
                 className="w-[110px] h-[110px] my-5 mx-auto"
               />
-              <Text className="text-3xl font-JakartaExtraBold text-center">
+              <Text className="text-3xl text-center font-JakartaExtraBold">
                 Verified
               </Text>
 
-              <Text className="text-base text-gray-400 font-Jakarta text-center mt-2">
+              <Text className="mt-2 text-base text-center text-gray-400 font-Jakarta">
                 Your have successfully verified your account.
               </Text>
 
