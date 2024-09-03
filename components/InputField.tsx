@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { InputFieldProps } from "@/types/ type";
+import { InputFieldProps } from "@/types/type";
 
 const InputField = ({
   label,
